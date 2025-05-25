@@ -1,9 +1,9 @@
 CREATE TABLE users
 (
-    id            SERIAL PRIMARY KEY,
-    email         TEXT NOT NULL,
-    name          TEXT NOT NULL,
-    password      TEXT NOT NULL,
-    plan          TEXT,
-    plan_due_date DATE
+    id         SERIAL PRIMARY KEY,
+    email      TEXT        NOT NULL UNIQUE,
+    name       TEXT        NOT NULL,
+    password   TEXT        NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
