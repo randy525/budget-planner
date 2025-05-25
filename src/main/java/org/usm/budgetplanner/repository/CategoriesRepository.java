@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface CategoriesRepository extends JpaRepository<CategoryEntity, Long> {
 
-    Optional<CategoryEntity> findByNameAndIncome(String name, boolean isIncome);
+    Optional<CategoryEntity> findByNameAndIsIncome(String name, boolean isIncome);
 
 }

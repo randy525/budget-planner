@@ -55,7 +55,7 @@ public class TransactionService {
         value = transactionDTO.isIncome() ? value : -value;
         transactionEntity.setValue(BigDecimal.valueOf(value).setScale(2, RoundingMode.HALF_UP));
 
-        CategoryEntity category = categoriesRepository.findByNameAndIncome(transactionDTO.getCategory(), transactionDTO.isIncome())
+        CategoryEntity category = categoriesRepository.findByNameAndIsIncome(transactionDTO.getCategory(), transactionDTO.isIncome())
                 .orElseThrow(() -> new ApplicationException("Category not found"));
         transactionEntity.setCategory(category);
 
