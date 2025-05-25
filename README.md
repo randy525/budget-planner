@@ -268,6 +268,7 @@
 Все SQL скрипты для создания таблиц и добавление данных в БД находятся в директории `src/main/resources/db/migration`
 
 **Диаграмма базы данных:**
+![image](https://github.com/user-attachments/assets/c1387184-fd44-443b-bf53-91f87de7b999)
 
 
 ---
