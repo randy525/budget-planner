@@ -1,12 +1,12 @@
 package org.usm.budgetplanner.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.usm.budgetplanner.domain.UserEntity;
-import org.usm.budgetplanner.dto.response.BalanceResponse;
 import org.usm.budgetplanner.dto.response.CategoryResponse;
+import org.usm.budgetplanner.dto.response.UserInfoResponse;
+import org.usm.budgetplanner.exception.ApplicationException;
 import org.usm.budgetplanner.repository.CategoriesRepository;
 import org.usm.budgetplanner.repository.TransactionsRepository;
 import org.usm.budgetplanner.repository.UsersRepository;
@@ -23,32 +23,41 @@ public class InfoService {
     private final UsersRepository usersRepository;
     private final CategoriesRepository categoriesRepository;
 
-    @Value("${info.urls.icons-base-url}")
-    private String iconsBaseURL;
-
-    public BalanceResponse getBalance() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserEntity user = usersRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    public BigDecimal getBalance() {
+        UserEntity user = getCurrentUser();
         double balance = transactionsRepository.findAllByUserId(user.getId())
                 .stream()
                 .mapToDouble(t -> t.getValue().doubleValue())
                 .sum();
+        return BigDecimal.valueOf(balance);
+    }
 
-        return BalanceResponse.builder()
-                .balance(BigDecimal.valueOf(balance))
+    public UserInfoResponse getUserInfo() {
+        UserEntity user = getCurrentUser();
+
+        return UserInfoResponse.builder()
+                .name(user.getName())
+                .balance(getBalance())
                 .build();
     }
 
     public List<CategoryResponse> getCategories() {
+        final String IGNORED_CATEGORY = "Adjust balance";
         return categoriesRepository.findAll().stream()
+                .filter(c -> !IGNORED_CATEGORY.equals(c.getName()))
                 .map(c -> CategoryResponse.builder()
                         .id(c.getId())
+                        .icon(c.getIcon())
                         .name(c.getName())
-                        .icon(iconsBaseURL + c.getIcon())
                         .isIncome(c.isIncome())
                         .build())
                 .collect(Collectors.toList());
 
+    }
+
+    private UserEntity getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usersRepository.findByEmail(email).orElseThrow(() -> new ApplicationException("User not found"));
     }
 
 

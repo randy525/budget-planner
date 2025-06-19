@@ -7,8 +7,9 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-public class BalanceResponse {
+public class UserInfoResponse {
 
+    private String name;
     private BigDecimal balance;
 
 }

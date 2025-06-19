@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 @Builder
 public class TransactionResponse {
 
-    private String category;
+    private long id;
     private double value;
+    private String categoryIcon;
+    private String categoryName;
     private boolean isIncome;
     private LocalDateTime time;
 

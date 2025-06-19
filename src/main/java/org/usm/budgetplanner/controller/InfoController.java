@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.usm.budgetplanner.dto.response.BalanceResponse;
 import org.usm.budgetplanner.dto.response.CategoryResponse;
+import org.usm.budgetplanner.dto.response.UserInfoResponse;
 import org.usm.budgetplanner.service.InfoService;
 
 import java.util.List;
@@ -19,15 +19,14 @@ public class InfoController {
 
     private final InfoService infoService;
 
-    @GetMapping("/balance")
-    public BalanceResponse getBalance() {
-        return infoService.getBalance();
+    @GetMapping("/user")
+    public UserInfoResponse getUserInfo() {
+        return infoService.getUserInfo();
     }
 
     @GetMapping("/categories")
     public List<CategoryResponse> getCategories() {
         return infoService.getCategories();
     }
-
 
 }
